@@ -1,0 +1,12 @@
+{
+  "name": "canvas-utils",
+  "version": "0.0.1",
+  "description": "Generic canvas utilities",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/joseprio/canvas-utils.git"
+  },
+  "author": "Josep del Rio",
+  "license": "MIT"
+}
