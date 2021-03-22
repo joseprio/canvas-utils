@@ -1,8 +1,12 @@
+function getContext(canvas) {
+  return newCanvas.getContext("2d");
+}
+
 export function createCanvas(width, height) {
   const newCanvas = document.createElement("canvas");
   newCanvas.width = width;
   newCanvas.height = height;
-  return newCanvas;
+  return [newCanvas, getContext(newCanvas)];
 }
 
 export function fillCircle(ctx, x, y, r) {
@@ -12,13 +16,12 @@ export function fillCircle(ctx, x, y, r) {
 }
 
 export function obtainImageData(canvas) {
-  return canvas
-    .getContext("2d")
+  return getContext(canvas)
     .getImageData(0, 0, canvas.width, canvas.height);
 }
 
 export function trimCanvas(canvas) {
-  const ctx = canvas.getContext("2d");
+  const ctx = getContext(canvas);
   const imageData = obtainImageData(canvas);
   const xs = [];
   const ys = [];
