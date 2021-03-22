@@ -1,4 +1,4 @@
-function getContext(canvas) {
+export function getContext(canvas) {
   return newCanvas.getContext("2d");
 }
 
