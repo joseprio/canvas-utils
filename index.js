@@ -1,5 +1,5 @@
 export function getContext(canvas) {
-  return newCanvas.getContext("2d");
+  return canvas.getContext("2d");
 }
 
 export function createCanvas(width, height) {
