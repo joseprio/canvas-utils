@@ -19,7 +19,7 @@ export function obtainImageData(canvas) {
   return getContext(canvas).getImageData(0, 0, canvas.width, canvas.height);
 }
 
-export function iterateImageData(callback) {
+export function iterateImageData(imageData, callback) {
   let pos = 0;
   for (let x = 0; x < imageData.width; x++) {
     for (let y = 0; y < imageData.height; y++) {
