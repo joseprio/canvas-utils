@@ -16,23 +16,28 @@ export function fillCircle(ctx, x, y, r) {
 }
 
 export function obtainImageData(canvas) {
-  return getContext(canvas)
-    .getImageData(0, 0, canvas.width, canvas.height);
+  return getContext(canvas).getImageData(0, 0, canvas.width, canvas.height);
+}
+
+export function iterateImageData(callback) {
+  let pos = 0;
+  for (let x = 0; x < imageData.width; x++) {
+    for (let y = 0; y < imageData.height; y++) {
+      callback(x, y, imageData.data.slice(pos, (pos += 4)));
+    }
+  }
 }
 
 export function trimCanvas(canvas) {
   const ctx = getContext(canvas);
-  const imageData = obtainImageData(canvas);
   const xs = [];
   const ys = [];
-  for (let x = 0; x < imageData.width; x++) {
-    for (let y = 0; y < imageData.height; y++) {
-      if (imageData.data[(y * imageData.width + x) * 4 + 3]) {
-        xs.push(x);
-        ys.push(y);
-      }
+  iterateImageData(obtainImageData(canvas), (x, y, pixel) => {
+    if (pixel[3]) {
+      xs.push(x);
+      ys.push(y);
     }
-  }
+  });
   const minX = Math.min(...xs);
   const minY = Math.min(...ys);
   const cut = ctx.getImageData(
