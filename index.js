@@ -19,25 +19,19 @@ export function obtainImageData(canvas) {
   return getContext(canvas).getImageData(0, 0, canvas.width, canvas.height);
 }
 
-export function iterateImageData(imageData, callback) {
-  let pos = 0;
-  for (let y = 0; y < imageData.height; y++) {
-    for (let x = 0; x < imageData.width; x++) {
-      callback(imageData.data.subarray(pos, (pos += 4)), x, y);
-    }
-  }
-}
-
 export function trimCanvas(canvas) {
   const ctx = getContext(canvas);
+  const imageData = obtainImageData(canvas);
   const xs = [];
   const ys = [];
-  iterateImageData(obtainImageData(canvas), (pixel, x, y) => {
-    if (pixel[3]) {
-      xs.push(x);
-      ys.push(y);
+  for (let x = 0; x < imageData.width; x++) {
+    for (let y = 0; y < imageData.height; y++) {
+      if (imageData.data[(y * imageData.width + x) * 4 + 3]) {
+        xs.push(x);
+        ys.push(y);
+      }
     }
-  });
+  }
   const minX = Math.min(...xs);
   const minY = Math.min(...ys);
   const cut = ctx.getImageData(
