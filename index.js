@@ -23,7 +23,7 @@ export function iterateImageData(callback) {
   let pos = 0;
   for (let x = 0; x < imageData.width; x++) {
     for (let y = 0; y < imageData.height; y++) {
-      callback(x, y, imageData.data.slice(pos, (pos += 4)));
+      callback(imageData.data.subarray(pos, (pos += 4)), x, y);
     }
   }
 }
@@ -32,7 +32,7 @@ export function trimCanvas(canvas) {
   const ctx = getContext(canvas);
   const xs = [];
   const ys = [];
-  iterateImageData(obtainImageData(canvas), (x, y, pixel) => {
+  iterateImageData(obtainImageData(canvas), (pixel, x, y) => {
     if (pixel[3]) {
       xs.push(x);
       ys.push(y);
