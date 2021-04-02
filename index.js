@@ -21,8 +21,8 @@ export function obtainImageData(canvas) {
 
 export function iterateImageData(imageData, callback) {
   let pos = 0;
-  for (let x = 0; x < imageData.width; x++) {
-    for (let y = 0; y < imageData.height; y++) {
+  for (let y = 0; y < imageData.height; y++) {
+    for (let x = 0; x < imageData.width; x++) {
       callback(imageData.data.subarray(pos, (pos += 4)), x, y);
     }
   }
