@@ -19,6 +19,10 @@ export function obtainImageData(canvas) {
   return getContext(canvas).getImageData(0, 0, canvas.width, canvas.height);
 }
 
+export function obtainPixelArray(canvas) {
+  return obtainImageData(canvas).data;
+}
+
 export function trimCanvas(canvas) {
   const ctx = getContext(canvas);
   const imageData = obtainImageData(canvas);
