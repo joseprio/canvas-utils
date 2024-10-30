@@ -8,3 +8,9 @@ export type RandomNumberGenerator = () => number;
 export declare function createPRNGGenerator(seed: number): RandomNumberGenerator;
 export declare function numberBetween(target: number, a: number, b: number): number;
 export declare function integerNumberBetween(target: number, a: number, b: number): number;
+export type CanvasFragment = [
+    fragment: HTMLCanvasElement,
+    top: number,
+    left: number
+];
+export declare function createCanvasFragments(targetCanvas: HTMLCanvasElement, rng: RandomNumberGenerator, desiredSize?: number): Array<CanvasFragment>;
