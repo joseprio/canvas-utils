@@ -1,4 +1,8 @@
-export function getContext(canvas: HTMLCanvasElement): CanvasRenderingContext2D {
+export function getContext(canvas: HTMLCanvasElement, readFrequently?: boolean): CanvasRenderingContext2D {
+  if (readFrequently) {
+    // @ts-expect-error -- Could potentially return null, but we won't account for that case
+    return canvas.getContext("2d", { willReadFrequently: true });
+  }
   // @ts-expect-error -- Could potentially return null, but we won't account for that case
   return canvas.getContext("2d");
 }
@@ -8,6 +12,14 @@ export function createCanvas(width: number, height: number): [HTMLCanvasElement,
   newCanvas.width = width;
   newCanvas.height = height;
   return [newCanvas, getContext(newCanvas)];
+}
+
+
+export function createOffscreenCanvas(width: number, height: number): [HTMLCanvasElement, CanvasRenderingContext2D] {
+  const newCanvas = document.createElement("canvas");
+  newCanvas.width = width;
+  newCanvas.height = height;
+  return [newCanvas, getContext(newCanvas, true)];
 }
 
 export function fillCircle(ctx: CanvasRenderingContext2D, x: number, y: number, r: number) {
@@ -25,7 +37,7 @@ export function obtainPixelArray(canvas: HTMLCanvasElement): Uint8ClampedArray {
 }
 
 export function trimCanvas(canvas: HTMLCanvasElement): HTMLCanvasElement {
-  const ctx = getContext(canvas);
+  const ctx = getContext(canvas, true);
   const imageData = obtainImageData(canvas);
   const xs: Array<number> = [];
   const ys: Array<number> = [];
@@ -215,7 +227,7 @@ export function createCanvasFragments(targetCanvas: HTMLCanvasElement, rng: Rand
           collector[COLLECTOR_MAX_X] - collector[COLLECTOR_MIN_X] + 1;
         const shardHeight =
           collector[COLLECTOR_MAX_Y] - collector[COLLECTOR_MIN_Y] + 1;
-        const [shardCanvas, shardCtx] = createCanvas(shardWidth, shardHeight);
+        const [shardCanvas, shardCtx] = createOffscreenCanvas(shardWidth, shardHeight);
         const imgData = obtainImageData(shardCanvas);
         collector[COLLECTOR_NEAREST].map((point) =>
           imgData.data.set(
